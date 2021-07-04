@@ -6,12 +6,69 @@
 package Logica;
 
 import Dominio.*;
+import java.io.*;
+import java.util.*;
 
 /**
  *
  * @author defGrupo()
  */
 public class app {
+    
+    public static boolean lectura(SistemaTaller2 sistema){
+        try{
+            
+            File arch = new File("clientes.txt");
+            Scanner s = new Scanner(arch);
+            while(s.hasNextLine()){
+                String linea = s.nextLine();
+                Scanner s1 = new Scanner(linea);
+                s1.useDelimiter(",");
+                String rut = s.next();
+                String nombre = s.next();
+                String apellido = s.next();
+                String contraseña = s.next();
+                int cantidad = s.nextInt();
+                double saldo = s.nextDouble();
+                sistema.ingresarCliente(rut, nombre, apellido, contraseña, saldo);
+            }
+            s.close();
+            
+            arch = new File("vehiculos.txt");
+            s = new Scanner(arch);
+            while(s.hasNextLine()){
+                String linea = s.nextLine();
+                Scanner s1 = new Scanner(linea);
+                s1.useDelimiter(",");
+                String rut = s1.next();
+                String modelo = s1.next();
+                String placa = s1.next();
+                double precio = s1.nextDouble();
+                int año = s1.nextInt();
+                String tipo = s1.next();
+                if(!rut.equalsIgnoreCase("En venta")){
+                    if(tipo.equalsIgnoreCase("Auto")){
+                        int rendimiento = s.nextInt();
+                        sistema.asociarAutoCliente(rut, año, rendimiento, placa, modelo, precio);
+                    }else{
+                        sistema.asociarMotocicletaCliente(rut, año, placa, modelo, precio);
+                    }
+                }else{
+                    if(tipo.equalsIgnoreCase("Auto")){
+                        int rendimiento = s.nextInt();
+                        sistema.ingresarAuto(modelo, placa, precio, año, rendimiento);
+                    }else{
+                        sistema.ingresarMotocicleta(modelo, placa, precio, año);
+                    }
+                }
+            }
+            s.close();
+            
+            return true;
+        }catch(FileNotFoundException ex){
+            return false;
+        }
+    }
 
     /**
      * @param args the command line arguments

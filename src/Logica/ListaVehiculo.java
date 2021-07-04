@@ -47,6 +47,15 @@ public class ListaVehiculo {
         this.cant = cant;
     }
     
+    public boolean addVehiculo(Vehiculo v){
+        if(cant<max){
+            lista[cant]=v;
+            cant++;
+            return true;
+        }else
+            return false;
+    }
+    
     public boolean eliminarVehiculo(String placa){
 	boolean resp;
 	int i;

@@ -47,6 +47,15 @@ public class ListaCliente {
         this.lista = lista;
     }
     
+    public boolean addCliente(Cliente c){
+        if(cant<max){
+            lista[cant]=c;
+            cant++;
+            return true;
+        }else
+            return false;
+    }
+    
     public Cliente getClienteI(int i){
         if(i>=0 && i<cant)
             return lista[i];

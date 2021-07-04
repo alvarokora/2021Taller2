@@ -14,8 +14,9 @@ public interface SistemaTaller2 {
     public boolean ingresarCliente(String rut, String nombre, String apellido, String contraseña, double saldo);
     public boolean ingresarAuto(String modelo, String placa, double precio, int año, int rendimiento);
     public boolean ingresarMotocicleta(String modelo, String placa, double precio, int año);
-    public void ingresarRevisionTecnica(int revisionTecnica);
-    public boolean asociarVehiculoCliente(String rut);
+    public void ingresarRevisionTecnica(int revisionTecnica1, int revisionTecnica2);
+    public boolean asociarAutoCliente(String rut, int año, int rendimiento, String placa, String modelo, double precio);
+    public boolean asociarMotocicletaCliente(String rut, int año, String placa, String modelo, double precio);
     public boolean registrarNuevoCliente(String rut, String nombre, String apellido, String contraseña, String confirmacionContraseña, double saldo);
     public String obtenerDatosCliente(String rut);
     public void agregarSaldo(String rut, String contraseña, double saldoNuevo);
