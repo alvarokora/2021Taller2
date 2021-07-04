@@ -37,12 +37,12 @@ public class Motocicleta extends Vehiculo{
     
     @Override
     public double precioCompra() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (super.getPrecio()/((double)77/100));
     }
 
     @Override
     public double precioVenta() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (super.getPrecio()*0.87)-revisionTecnica;
     }   
     
 }

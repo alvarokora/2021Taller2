@@ -47,12 +47,12 @@ public class Auto extends Vehiculo{
 
     @Override
     public double precioCompra() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (super.getPrecio()/((double)81/100))+revisionTecnica;
     }
 
     @Override
     public double precioVenta() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return super.getPrecio()/((double)(81+rendimiento)/100);
     }
     
 }
