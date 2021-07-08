@@ -151,10 +151,5 @@ public class SistemaTaller2Impl implements SistemaTaller2{
     public String obtenerGanancia() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public void cerrarSistema() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
 }
