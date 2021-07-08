@@ -18,6 +18,7 @@ public interface SistemaTaller2 {
     public boolean asociarAutoCliente(String rut, int año, int rendimiento, String placa, String modelo, double precio);
     public boolean asociarMotocicletaCliente(String rut, int año, String placa, String modelo, double precio);
     public boolean comprobarRut(String rut);
+    public boolean comprobarContraseña(String rut, String contraseña);
     public String obtenerDatosCliente(String rut);
     public void agregarSaldo(String rut, String contraseña, double saldoNuevo);
     public boolean cambiarContraseña(String rut, String contraseña, String nuevaContraseña, String nuevaContraseñaConfirmacion);

@@ -75,6 +75,17 @@ public class SistemaTaller2Impl implements SistemaTaller2{
         }
         return false;
     }
+    
+    @Override
+    public boolean comprobarContraseña(String rut, String contraseña){
+        for(int i=0;i<listaCliente.getCant();i++){
+            if(listaCliente.getClienteI(i).getRut().equalsIgnoreCase(rut)){
+                if(listaCliente.getClienteI(i).getContraseña().equalsIgnoreCase(contraseña))
+                    return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public String obtenerDatosCliente(String rut) {
@@ -104,17 +115,37 @@ public class SistemaTaller2Impl implements SistemaTaller2{
 
     @Override
     public void agregarSaldo(String rut, String contraseña, double saldoNuevo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for(int i=0;i<listaCliente.getCant();i++){
+            if(listaCliente.getClienteI(i).getRut().equalsIgnoreCase(rut)){
+                listaCliente.getClienteI(i).setSaldo(listaCliente.getClienteI(i).getSaldo()+saldoNuevo);
+                break;
+            }
+        }
     }
 
     @Override
     public boolean cambiarContraseña(String rut, String contraseña, String nuevaContraseña, String nuevaContraseñaConfirmacion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for(int i=0;i<listaCliente.getCant();i++){
+            if(listaCliente.getClienteI(i).getRut().equalsIgnoreCase(rut)){
+                listaCliente.getClienteI(i).setContraseña(nuevaContraseña);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public String obtenerVehiculosCliente(String rut) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String r = "";
+        for(int i=0;i<listaCliente.getCant();i++){
+            if(listaCliente.getClienteI(i).getRut().equalsIgnoreCase(rut)){
+                for(int j=0;j<listaCliente.getClienteI(i).getInventario().getCant();j++){
+                    // estas haciendo este for para obtener los datos del inventario de la persona
+                }
+                break;
+            }
+        }
+        return r;
     }
 
     @Override

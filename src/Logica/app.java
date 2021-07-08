@@ -78,61 +78,120 @@ public class app {
     }
     
     public static void menu(SistemaTaller2 sistema, Scanner s){
-        boolean resp = true;
+        System.out.println("----------\nBienvenido\n----------");
         System.out.print("Ingrese rut de usuario: ");
         String rut = s.next();
-        while(true){
-            if(rut.equalsIgnoreCase("admin")){
+        System.out.print("Ingrese contraseña del usuario: ");
+        String contraseña = s.next();
+        if(lectura(sistema)){
+            System.out.println("Uno de los archivos no existe");
+        }else{
+            while(true){
+                if(rut.equalsIgnoreCase("admin")){
 
-            }else{
-                while(sistema.comprobarRut(rut)==false){
-                    System.out.print("Rut ingresado no esta en sistema, desea registrar un nuevo cliente? (si/no): ");
-                    rut = s.next();
-                    while(!rut.equalsIgnoreCase("si") && !rut.equalsIgnoreCase("no")){
-                        System.out.print("Opcion ingresada erronea, ingrese nuevamente (si/no): ");
+                }else{
+                    while(sistema.comprobarRut(rut)==false){
+                        System.out.print("Rut ingresado no esta en sistema, desea registrar un nuevo cliente? (si/no): ");
                         rut = s.next();
-                    }
-                    if(rut.equalsIgnoreCase("si")){
-                        System.out.print("Ingrese rut del nuevo cliente: ");
-                        rut = s.next();
-                        System.out.print("Ingrese nombre del nuevo cliente: ");
-                        String nombre = s.next();
-                        System.out.print("Ingrese apellido del nuevo cliente: ");
-                        String apellido = s.next();
-                        System.out.print("Ingrese contraseña del nuevo cliente: ");
-                        String contraseña = s.next();
-                        System.out.print("Ingrese contraseña nuevamente: ");
-                        String confirmacionContraseña = s.next();
-                        while(comprobarContraseña(contraseña,confirmacionContraseña)==false){
-                            System.out.print("Confirmacion de contraseña erronea, ingrese nuevamente: ");
-                            confirmacionContraseña = s.next();
+                        while(!rut.equalsIgnoreCase("si") && !rut.equalsIgnoreCase("no")){
+                            System.out.print("Opcion ingresada erronea, ingrese nuevamente (si/no): ");
+                            rut = s.next();
                         }
-                        System.out.print("Ingrese saldo del nuevo cliente: ");
-                        double saldo = s.nextDouble();
-                        while(saldo<0){
-                            System.out.print("Saldo ingresado erroneo, ingrese nuevamente: ");
-                            saldo = s.nextDouble();
+                        if(rut.equalsIgnoreCase("si")){
+                            System.out.print("Ingrese rut del nuevo cliente: ");
+                            rut = s.next();
+                            System.out.print("Ingrese nombre del nuevo cliente: ");
+                            String nombre = s.next();
+                            System.out.print("Ingrese apellido del nuevo cliente: ");
+                            String apellido = s.next();
+                            System.out.print("Ingrese contraseña del nuevo cliente: ");
+                            contraseña = s.next();
+                            System.out.print("Ingrese contraseña nuevamente: ");
+                            String confirmacionContraseña = s.next();
+                            while(comprobarContraseña(contraseña,confirmacionContraseña)==false){
+                                System.out.print("Confirmacion de contraseña erronea, ingrese nuevamente: ");
+                                confirmacionContraseña = s.next();
+                            }
+                            System.out.print("Ingrese saldo del nuevo cliente: ");
+                            double saldo = s.nextDouble();
+                            while(saldo<0){
+                                System.out.print("Saldo ingresado erroneo, ingrese nuevamente: ");
+                                saldo = s.nextDouble();
+                            }
+                            sistema.ingresarCliente(rut, nombre, apellido, contraseña, saldo);
+                        }else{
+                            System.out.print("Ingrese rut de usuario: ");
+                            rut = s.next();
                         }
-                        sistema.ingresarCliente(rut, nombre, apellido, contraseña, saldo);
-                    }else{
-                        System.out.print("Ingrese rut de usuario: ");
-                        rut = s.next();
                     }
-                }
-                System.out.print("1) Datos Cliente\n2) Agregar Saldo\n3) Cambiar Contraseña\n4) Vender Vehiculo\n5) Comprar Vehiculo\n6) Cerrar Sesion\n7) Cerrar Sistema\nIngrese Opcion: ");
-                String opcion = s.next();
-                if(opcion.equalsIgnoreCase("7"))
-                    break;
-                while(!opcion.equalsIgnoreCase("6")){
-                    while(!opcion.equalsIgnoreCase("1") && !opcion.equalsIgnoreCase("2") && !opcion.equalsIgnoreCase("3") && !opcion.equalsIgnoreCase("4") && !opcion.equalsIgnoreCase("5") && !opcion.equalsIgnoreCase("6")){
-                        System.out.print("Opcion ingresada erronea, ingrese nuevamente: ");
+                    while(sistema.comprobarContraseña(rut, contraseña)==false){
+                        System.out.print("Contraseña ingresada erronea, ingrese nuevamente: ");
+                        contraseña = s.next();
+                    }
+                    System.out.print("1) Datos Cliente\n2) Agregar Saldo\n3) Cambiar Contraseña\n4) Vender Vehiculo\n5) Comprar Vehiculo\n6) Cerrar Sesion\n7) Cerrar Sistema\nIngrese Opcion: ");
+                    String opcion = s.next();
+                    if(opcion.equalsIgnoreCase("7"))
+                        break;
+                    while(!opcion.equalsIgnoreCase("6")){
+                        while(!opcion.equalsIgnoreCase("1") && !opcion.equalsIgnoreCase("2") && !opcion.equalsIgnoreCase("3") && !opcion.equalsIgnoreCase("4") && !opcion.equalsIgnoreCase("5") && !opcion.equalsIgnoreCase("6")){
+                            System.out.print("Opcion ingresada erronea, ingrese nuevamente: ");
+                            opcion = s.next();
+                        }
+                        if(opcion.equalsIgnoreCase("1")){
+                            System.out.println(sistema.obtenerDatosCliente(rut));
+                        }
+                        if(opcion.equalsIgnoreCase("2")){
+                            System.out.print("Ingrese saldo a agregar al usuario: ");
+                            double saldoNuevo = s.nextDouble();
+                            while(saldoNuevo<=0){
+                                System.out.print("Saldo ingresado erroneo, ingrese nuevamente: ");
+                                saldoNuevo = s.nextDouble();
+                            }
+                            System.out.print("Ingrese contraseña para confirmar: ");
+                            contraseña = s.next();
+                            while(sistema.comprobarContraseña(rut, contraseña)==false){
+                                System.out.print("Contraseña ingresada erronea, ingrese nuevamente: ");
+                                contraseña = s.next();
+                            }
+                            sistema.agregarSaldo(rut, contraseña, saldoNuevo);
+                        }
+                        if(opcion.equalsIgnoreCase("3")){
+                            System.out.print("Ingrese contraseña actual del usuario: ");
+                            contraseña = s.next();
+                            while(sistema.comprobarContraseña(rut, contraseña)==false){
+                                System.out.print("Contraseña ingresada erronea, ingrese nuevamente: ");
+                                contraseña = s.next();
+                            }
+                            System.out.print("Ingrese contraseña nueva: ");
+                            String nuevaContraseña = s.next();
+                            System.out.print("Ingrese nuevamente la contraseña: ");
+                            String nuevaContraseñaConfirmacion = s.next();
+                            while(comprobarContraseña(nuevaContraseña,nuevaContraseñaConfirmacion)==false){
+                                System.out.print("Confirmacion de contraseña erronea, ingrese nuevamente: ");
+                                nuevaContraseñaConfirmacion = s.next();
+                            }
+                            sistema.cambiarContraseña(rut, contraseña, nuevaContraseña, nuevaContraseñaConfirmacion);
+                        }
+                        if(opcion.equalsIgnoreCase("4")){
+                            // vas en esta opcion
+                        }
+                        if(opcion.equalsIgnoreCase("5")){
+
+                        }
+                        System.out.print("1) Datos Cliente\n2) Agregar Saldo\n3) Cambiar Contraseña\n4) Vender Vehiculo\n5) Comprar Vehiculo\n6) Cerrar Sesion\n7) Cerrar Sistema\nIngrese Opcion: ");
                         opcion = s.next();
                     }
-                    // vas en esta parte haciendo las opciones
+                    if(opcion.equalsIgnoreCase("7"))
+                        break;
                 }
+                System.out.print("Ingrese rut de usuario: ");
+                rut = s.next();
+                System.out.print("Ingrese contraseña del usuario: ");
+                contraseña = s.next();
             }
+            System.out.println("---------------\nCerrando Sesion\n---------------");
         }
-        System.out.println("---------------\nCerrando Sesion\n---------------");
+        System.out.println("-----------------------------\nGracias por ocupar el sistema\n-----------------------------");
     }
     
     /**
