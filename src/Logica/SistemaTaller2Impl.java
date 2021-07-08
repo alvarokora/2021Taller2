@@ -68,8 +68,12 @@ public class SistemaTaller2Impl implements SistemaTaller2{
     }
 
     @Override
-    public boolean registrarNuevoCliente(String rut, String nombre, String apellido, String contraseña, String confirmacionContraseña, double saldo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean comprobarRut(String rut){
+        for(int i=0;i<listaCliente.getCant();i++){
+            if(listaCliente.getClienteI(i).getRut().equalsIgnoreCase(rut))
+                return true;
+        }
+        return false;
     }
 
     @Override

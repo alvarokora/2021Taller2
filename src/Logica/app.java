@@ -70,10 +70,66 @@ public class app {
         }
     }
 
+    public static boolean comprobarContraseña(String contraseña, String confirmacionContraseña){
+        if(confirmacionContraseña.equalsIgnoreCase(contraseña))
+            return true;
+        else
+            return false;
+    }
+    
+    public static void menu(SistemaTaller2 sistema, Scanner s){
+        boolean resp = true;
+        System.out.print("Ingrese rut de usuario: ");
+        String rut = s.next();
+        if(rut.equalsIgnoreCase("admin")){
+            
+        }else{
+            while(sistema.comprobarRut(rut)==false){
+                System.out.print("Rut ingresado no esta en sistema, desea registrar un nuevo cliente? (si/no): ");
+                rut = s.next();
+                while(!rut.equalsIgnoreCase("si") && !rut.equalsIgnoreCase("no")){
+                    System.out.print("Opcion ingresada erronea, ingrese nuevamente (si/no): ");
+                    rut = s.next();
+                }
+                if(rut.equalsIgnoreCase("si")){
+                    System.out.print("Ingrese rut del nuevo cliente: ");
+                    rut = s.next();
+                    System.out.print("Ingrese nombre del nuevo cliente: ");
+                    String nombre = s.next();
+                    System.out.print("Ingrese apellido del nuevo cliente: ");
+                    String apellido = s.next();
+                    System.out.print("Ingrese contraseña del nuevo cliente: ");
+                    String contraseña = s.next();
+                    System.out.print("Ingrese contraseña nuevamente: ");
+                    String confirmacionContraseña = s.next();
+                    while(comprobarContraseña(contraseña,confirmacionContraseña)==false){
+                        System.out.print("Confirmacion de contraseña erronea, ingrese nuevamente: ");
+                        confirmacionContraseña = s.next();
+                    }
+                    System.out.print("Ingrese saldo del nuevo cliente: ");
+                    double saldo = s.nextDouble();
+                    while(saldo<0){
+                        System.out.print("Saldo ingresado erroneo, ingrese nuevamente: ");
+                        saldo = s.nextDouble();
+                    }
+                    sistema.ingresarCliente(rut, nombre, apellido, contraseña, saldo);
+                }else{
+                    System.out.print("Rut ingresado erroneo, ingrese nuevamente: ");
+                    rut = s.next();
+                }
+            }
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
+        SistemaTaller2 sistema = new SistemaTaller2Impl();
+        Scanner s = new Scanner(System.in);
+        
+        menu(sistema,s);
         
         Vehiculo v = new Auto(2010,10,"f7","toyota",1000);
         Motocicleta.setRevisionTecnica(100);
