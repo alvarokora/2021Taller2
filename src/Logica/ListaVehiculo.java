@@ -83,4 +83,16 @@ public class ListaVehiculo {
             return null;
     }
     
+    public Vehiculo buscarVehiculo(String placa){
+	int j;
+	for(j=0;j<cant;j++){
+            if(lista[j].getPlaca().equalsIgnoreCase(placa))
+		break;
+	}
+	if(j==cant)
+            return null;
+	else
+            return lista[j];
+    }
+    
 }

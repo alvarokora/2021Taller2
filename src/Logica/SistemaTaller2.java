@@ -23,9 +23,11 @@ public interface SistemaTaller2 {
     public void agregarSaldo(String rut, String contraseña, double saldoNuevo);
     public boolean cambiarContraseña(String rut, String contraseña, String nuevaContraseña, String nuevaContraseñaConfirmacion);
     public String obtenerVehiculosCliente(String rut);
+    public boolean comprobarPlaca(String rut, String placa);
     public boolean venderVehiculo(String rut, String placa, boolean confirmacion);
     public String obtenerVehiculosVenta();
-    public void comprarVehiculo(String rut, String placa);
+    public boolean comprobarPlacaVenta(String placa);
+    public String comprarVehiculo(String rut, String placa);
     public String obtenerInformacionCliente(String rut);
     public String obtenerMayorCantidadVehiculos();
     public String obtenerVehiculosVentaUSD();

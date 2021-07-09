@@ -140,27 +140,100 @@ public class SistemaTaller2Impl implements SistemaTaller2{
         for(int i=0;i<listaCliente.getCant();i++){
             if(listaCliente.getClienteI(i).getRut().equalsIgnoreCase(rut)){
                 for(int j=0;j<listaCliente.getClienteI(i).getInventario().getCant();j++){
-                    // estas haciendo este for para obtener los datos del inventario de la persona
+                    r+="Placa: "+listaCliente.getClienteI(i).getInventario().getVehiculoI(j).getPlaca()+", Precio: "+listaCliente.getClienteI(i).getInventario().getVehiculoI(j).getPrecio();
+                    if(listaCliente.getClienteI(i).getInventario().getVehiculoI(j) instanceof Motocicleta){
+                        Vehiculo m = (Motocicleta) listaCliente.getClienteI(i).getInventario().getVehiculoI(j);
+                        r+=", Precio de venta: "+(Math.round(m.precioVenta()*100.0)/100.0)+"\n";
+                    }
+                    if(listaCliente.getClienteI(i).getInventario().getVehiculoI(j) instanceof Auto){
+                        Vehiculo a = (Auto) listaCliente.getClienteI(i).getInventario().getVehiculoI(j);
+                        r+=", Precio de venta: "+(Math.round(a.precioVenta()*100.0)/100.0)+"\n";
+                    }
                 }
+                if(listaCliente.getClienteI(i).getInventario().getCant()==0)
+                    return "El cliente no tiene vehiculos";
                 break;
             }
         }
         return r;
     }
+    
+    @Override
+    public boolean comprobarPlaca(String rut, String placa){
+        for(int i=0;i<listaCliente.getCant();i++){
+            if(listaCliente.getClienteI(i).getRut().equalsIgnoreCase(rut)){
+                for(int j=0;j<listaCliente.getClienteI(i).getInventario().getCant();j++){
+                    if(listaCliente.getClienteI(i).getInventario().getVehiculoI(j).getPlaca().equalsIgnoreCase(placa))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
 
     @Override
     public boolean venderVehiculo(String rut, String placa, boolean confirmacion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(confirmacion==false)
+            return false;
+        else{
+            for(int i=0;i<listaCliente.getCant();i++){
+                if(listaCliente.getClienteI(i).getRut().equalsIgnoreCase(rut)){
+                    Vehiculo v = listaCliente.getClienteI(i).getInventario().buscarVehiculo(placa);
+                    listaVenta.addVehiculo(v);
+                    if(v instanceof Motocicleta){
+                        v = (Motocicleta) listaCliente.getClienteI(i).getInventario().buscarVehiculo(placa);
+                        listaCliente.getClienteI(i).setSaldo(listaCliente.getClienteI(i).getSaldo()+v.precioVenta());
+                    }
+                    if(v instanceof Auto){
+                        v = (Auto) listaCliente.getClienteI(i).getInventario().buscarVehiculo(placa);
+                        listaCliente.getClienteI(i).setSaldo(listaCliente.getClienteI(i).getSaldo()+v.precioVenta());
+                    }
+                    listaCliente.getClienteI(i).getInventario().eliminarVehiculo(placa);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
     public String obtenerVehiculosVenta() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String r = "";
+        if(listaVenta.getCant()==0)
+            return "No hay vehiculos a la venta";
+        else{
+            for(int i=0;i<listaVenta.getCant();i++){
+                r+="Placa: "+listaVenta.getVehiculoI(i).getPlaca()+", Precio: "+listaVenta.getVehiculoI(i).getPrecio()+"\n";
+            }
+        }
+        return r;
+    }
+    
+    @Override
+    public boolean comprobarPlacaVenta(String placa){
+        if(listaVenta.buscarVehiculo(placa)==null)
+            return false;
+        else
+            return true;
     }
 
     @Override
-    public void comprarVehiculo(String rut, String placa) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String comprarVehiculo(String rut, String placa) {
+        Vehiculo v = listaVenta.buscarVehiculo(placa);
+        if(v instanceof Auto){
+            v = (Auto) listaVenta.buscarVehiculo(placa);
+        }
+        if(v instanceof Motocicleta){
+            v = (Motocicleta) listaVenta.buscarVehiculo(placa);
+        }
+        if(listaCliente.buscarCliente(rut).getSaldo()-v.precioCompra()<0)
+            return "El cliente no tiene suficiente saldo para comprar el vehiculo";
+        else{
+            listaVenta.eliminarVehiculo(placa);
+            listaCliente.buscarCliente(rut).getInventario().addVehiculo(v);
+            listaCliente.buscarCliente(rut).setSaldo(listaCliente.buscarCliente(rut).getSaldo()-v.precioCompra());
+            return "Vehiculo comprado";
+        }
     }
 
     @Override

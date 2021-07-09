@@ -83,12 +83,13 @@ public class app {
         String rut = s.next();
         System.out.print("Ingrese contraseña del usuario: ");
         String contraseña = s.next();
+        String opcion = "";
         if(lectura(sistema)){
             System.out.println("Uno de los archivos no existe");
         }else{
             while(true){
                 if(rut.equalsIgnoreCase("admin")){
-
+                    
                 }else{
                     while(sistema.comprobarRut(rut)==false){
                         System.out.print("Rut ingresado no esta en sistema, desea registrar un nuevo cliente? (si/no): ");
@@ -129,7 +130,7 @@ public class app {
                         contraseña = s.next();
                     }
                     System.out.print("1) Datos Cliente\n2) Agregar Saldo\n3) Cambiar Contraseña\n4) Vender Vehiculo\n5) Comprar Vehiculo\n6) Cerrar Sesion\n7) Cerrar Sistema\nIngrese Opcion: ");
-                    String opcion = s.next();
+                    opcion = s.next();
                     if(opcion.equalsIgnoreCase("7"))
                         break;
                     while(!opcion.equalsIgnoreCase("6")){
@@ -173,13 +174,46 @@ public class app {
                             sistema.cambiarContraseña(rut, contraseña, nuevaContraseña, nuevaContraseñaConfirmacion);
                         }
                         if(opcion.equalsIgnoreCase("4")){
-                            // vas en esta opcion
+                            System.out.println(sistema.obtenerVehiculosCliente(rut));
+                            if(!sistema.obtenerVehiculosCliente(rut).equalsIgnoreCase("El cliente no tiene vehiculos")){
+                                System.out.print("Ingrese placa del vehiculo a vender: ");
+                                String placa = s.next();
+                                while(sistema.comprobarPlaca(rut, placa)==false){
+                                    System.out.print("Placa ingresada erronea, ingrese nuevamente: ");
+                                    placa = s.next();
+                                }
+                                System.out.print("Confirme si es que lo vendera (si/no): ");
+                                String confirmacion = s.next();
+                                while(!confirmacion.equalsIgnoreCase("si") && !confirmacion.equalsIgnoreCase("no")){
+                                    System.out.print("La opcion ingresada es erronea, ingrese nuevamente (si/no): ");
+                                    confirmacion = s.next();
+                                }
+                                if(confirmacion.equalsIgnoreCase("si")){
+                                    sistema.venderVehiculo(rut, placa, true);
+                                    System.out.println("Vehiculo vendido");
+                                }else{
+                                    sistema.venderVehiculo(rut, placa, false);
+                                    System.out.println("Vehiculo no vendido");
+                                }
+                            }
                         }
                         if(opcion.equalsIgnoreCase("5")){
-
+                            System.out.println(sistema.obtenerVehiculosVenta());
+                            if(!sistema.obtenerVehiculosVenta().equalsIgnoreCase("No hay vehiculos a la venta")){
+                                System.out.print("Ingrese placa del vehiculo a comprar: ");
+                                String placa = s.next();
+                                while(sistema.comprobarPlacaVenta(placa)==false){
+                                    System.out.print("Placa ingresada erronea, ingrese nuevamente: ");
+                                    placa = s.next();
+                                }
+                                System.out.println(sistema.comprarVehiculo(rut, placa));
+                            }
                         }
                         System.out.print("1) Datos Cliente\n2) Agregar Saldo\n3) Cambiar Contraseña\n4) Vender Vehiculo\n5) Comprar Vehiculo\n6) Cerrar Sesion\n7) Cerrar Sistema\nIngrese Opcion: ");
                         opcion = s.next();
+                    }
+                    if(opcion.equalsIgnoreCase("6")){
+                        System.out.println("---------------\nCerrando Sesion\n---------------");
                     }
                     if(opcion.equalsIgnoreCase("7"))
                         break;
@@ -189,7 +223,6 @@ public class app {
                 System.out.print("Ingrese contraseña del usuario: ");
                 contraseña = s.next();
             }
-            System.out.println("---------------\nCerrando Sesion\n---------------");
         }
         System.out.println("-----------------------------\nGracias por ocupar el sistema\n-----------------------------");
     }
