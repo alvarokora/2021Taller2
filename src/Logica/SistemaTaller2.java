@@ -32,5 +32,6 @@ public interface SistemaTaller2 {
     public String obtenerMayorCantidadVehiculos();
     public String obtenerVehiculosVentaUSD();
     public String obtenerGanancia();
+    public void cerrarSistema(ListaCliente listaClienteActualizado, ListaVehiculo listaVentaActualizado);
     
 }

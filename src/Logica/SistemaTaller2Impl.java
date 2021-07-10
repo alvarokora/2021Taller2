@@ -238,22 +238,80 @@ public class SistemaTaller2Impl implements SistemaTaller2{
 
     @Override
     public String obtenerInformacionCliente(String rut) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String r = "";
+        for(int i=0;i<listaCliente.buscarCliente(rut).getInventario().getCant();i++){
+            r+="Modelo: "+listaCliente.buscarCliente(rut).getInventario().getVehiculoI(i).getModelo()+", Precio: "+((listaCliente.buscarCliente(rut).getInventario().getVehiculoI(i).getPrecio())/730)+"(USD)\n";
+        }
+        if(listaCliente.buscarCliente(rut).getInventario().getCant()==0)
+            return "El cliente no tiene vehiculos";
+        else
+            return r;
     }
 
     @Override
     public String obtenerMayorCantidadVehiculos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String r = "";
+        int indiceClienteMayor = 0;
+        int mayor = -9999999;
+        for(int i=0;i<listaCliente.getCant();i++){
+            if(listaCliente.getClienteI(i).getInventario().getCant()>=mayor){
+                indiceClienteMayor = i;
+                mayor=listaCliente.getClienteI(i).getInventario().getCant();
+            }
+        }
+        r+="Rut: "+listaCliente.getClienteI(indiceClienteMayor).getRut();
+        for(int i=0;i<listaCliente.getClienteI(indiceClienteMayor).getInventario().getCant();i++){
+            r+="\nPlaca: "+listaCliente.getClienteI(indiceClienteMayor).getInventario().getVehiculoI(i).getPlaca()+", Modelo: "+listaCliente.getClienteI(indiceClienteMayor).getInventario().getVehiculoI(i).getModelo();
+            if(listaCliente.getClienteI(indiceClienteMayor).getInventario().getVehiculoI(i) instanceof Motocicleta){
+                Vehiculo m = (Motocicleta) listaCliente.getClienteI(indiceClienteMayor).getInventario().getVehiculoI(i);
+                r+=", Precio de venta: "+(Math.round(m.precioVenta()*100.0)/100.0);
+            }
+            if(listaCliente.getClienteI(indiceClienteMayor).getInventario().getVehiculoI(i) instanceof Auto){
+                Vehiculo a = (Auto) listaCliente.getClienteI(indiceClienteMayor).getInventario().getVehiculoI(i);
+                r+=", Precio de venta: "+(Math.round(a.precioVenta()*100.0)/100.0);
+            }
+        }
+        return r;
     }
 
     @Override
     public String obtenerVehiculosVentaUSD() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String r = "";
+        for(int i=0;i<listaVenta.getCant();i++){
+            r+="Placa: "+listaVenta.getVehiculoI(i).getPlaca()+", Modelo: "+listaVenta.getVehiculoI(i).getModelo();
+            if(listaVenta.getVehiculoI(i) instanceof Motocicleta){
+                Vehiculo m = (Motocicleta) listaVenta.getVehiculoI(i);
+                r+=", Precio de compra: "+((Math.round(m.precioCompra()*100.0)/100.0)/730)+"(USD), Precio de venta: "+((Math.round(m.precioVenta()*100.0)/100.0)/730)+"(USD)\n";
+            }
+            if(listaVenta.getVehiculoI(i) instanceof Auto){
+                Vehiculo a = (Auto) listaVenta.getVehiculoI(i);
+                r+=", Precio de compra: "+((Math.round(a.precioCompra()*100.0)/100.0)/730)+"(USD), Precio de venta: "+((Math.round(a.precioVenta()*100.0)/100.0)/730)+"(USD)\n";
+            }
+        }
+        return r;
     }
 
     @Override
     public String obtenerGanancia() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String r = "";
+        for(int i=0;i<listaVenta.getCant();i++){
+            r+="Placa: "+listaVenta.getVehiculoI(i).getPlaca()+", Modelo: "+listaVenta.getVehiculoI(i).getModelo();
+            if(listaVenta.getVehiculoI(i) instanceof Motocicleta){
+                Vehiculo m = (Motocicleta) listaVenta.getVehiculoI(i);
+                r+=", Ganancia: "+((Math.round(m.precioCompra()*100.0)/100.0)-(Math.round(m.precioVenta()*100.0)/100.0))+"\n";
+            }
+            if(listaVenta.getVehiculoI(i) instanceof Auto){
+                Vehiculo a = (Auto) listaVenta.getVehiculoI(i);
+                r+=", Ganancia: "+((Math.round(a.precioCompra()*100.0)/100.0)-(Math.round(a.precioVenta()*100.0)/100.0))+"\n";
+            }
+        }
+        return r;
+    }
+    
+    @Override
+    public void cerrarSistema(ListaCliente listaClienteActualizado, ListaVehiculo listaVentaActualizado){
+        listaClienteActualizado = listaCliente;
+        listaVentaActualizado = listaVenta;
     }
     
 }

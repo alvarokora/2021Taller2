@@ -77,6 +77,35 @@ public class app {
             return false;
     }
     
+    public static void cerrarSistema(ListaCliente listaCliente, ListaVehiculo listaVenta){
+        try{
+            
+            FileWriter arch = new FileWriter("clientes.txt");
+            PrintWriter reg = new PrintWriter(arch);
+            for(int i=0;i<listaCliente.getCant();i++){
+                reg.println(listaCliente.getClienteI(i).getRut()+","+listaCliente.getClienteI(i).getNombre()+","+listaCliente.getClienteI(i).getApellido()+","+listaCliente.getClienteI(i).getApellido()+","+listaCliente.getClienteI(i).getContraseña()+","+listaCliente.getClienteI(i).getInventario().getCant()+","+(int)listaCliente.getClienteI(i).getSaldo());
+            }
+            arch.close();
+            
+            arch = new FileWriter("vehiculos.txt");
+            reg = new PrintWriter(arch);
+            for(int i=0;i<listaVenta.getCant();i++){
+                reg.print("En venta,"+listaVenta.getVehiculoI(i).getModelo()+","+listaVenta.getVehiculoI(i).getPlaca()+","+listaVenta.getVehiculoI(i).getPrecio()+",");
+                if(listaVenta.getVehiculoI(i) instanceof Auto){
+                    Auto a = (Auto) listaVenta.getVehiculoI(i);
+                    reg.print("Auto,"+a.getRendimiento()+"\n");
+                }
+                if(listaVenta.getVehiculoI(i) instanceof Motocicleta){
+                    Motocicleta m = (Motocicleta) listaVenta.getVehiculoI(i);
+                    reg.print("Motocicleta\n");
+                }
+            }
+            arch.close();
+            
+        }catch(IOException ex){
+        }
+    }
+    
     public static void menu(SistemaTaller2 sistema, Scanner s){
         System.out.println("----------\nBienvenido\n----------");
         System.out.print("Ingrese rut de usuario: ");
@@ -89,7 +118,44 @@ public class app {
         }else{
             while(true){
                 if(rut.equalsIgnoreCase("admin")){
-                    
+                    while(!contraseña.equalsIgnoreCase("admin")){
+                        System.out.print("Contraseña ingresada erronea, ingrese nuevamente: ");
+                        contraseña = s.next();
+                    }
+                    System.out.print("1)Informacion Cliente\n2)Posible Compra\n3)Vehiculos a la venta\n4)Futuras Ganancias\n5)Cerrar Sesion\n6)Cerrar Sistema\nIngrese Opcion: ");
+                    opcion = s.next();
+                    if(opcion.equalsIgnoreCase("6"))
+                        break;
+                    while(!opcion.equalsIgnoreCase("5")){
+                        while(!opcion.equalsIgnoreCase("1") && !opcion.equalsIgnoreCase("2") && !opcion.equalsIgnoreCase("3") && !opcion.equalsIgnoreCase("4") && !opcion.equalsIgnoreCase("5")){
+                            System.out.print("Opcion ingresada erronea, ingrese nuevamente: ");
+                            opcion = s.next();
+                        }
+                        if(opcion.equalsIgnoreCase("1")){
+                            System.out.print("Ingrese rut del cliente: ");
+                            rut = s.next();
+                            while(sistema.comprobarRut(rut)==false){
+                                System.out.print("Rut ingresado erroneo, ingrese nuevamente: ");
+                                rut = s.next();
+                            }
+                            System.out.println(sistema.obtenerInformacionCliente(rut));
+                        }
+                        if(opcion.equalsIgnoreCase("2")){
+                            System.out.println(sistema.obtenerMayorCantidadVehiculos());
+                        }
+                        if(opcion.equalsIgnoreCase("3")){
+                            System.out.println(sistema.obtenerVehiculosVentaUSD());
+                        }
+                        if(opcion.equalsIgnoreCase("4")){
+                            System.out.println(sistema.obtenerGanancia());
+                        }
+                        System.out.print("1)Informacion Cliente\n2)Posible Compra\n3)Vehiculos a la venta\n4)Futuras Ganancias\n5)Cerrar Sesion\n6)Cerrar Sistema\nIngrese Opcion: ");
+                        opcion = s.next();
+                    }
+                    if(opcion.equalsIgnoreCase("5"))
+                        System.out.println("---------------\nCerrando Sesion\n---------------");
+                    if(opcion.equalsIgnoreCase("6"))
+                        break;
                 }else{
                     while(sistema.comprobarRut(rut)==false){
                         System.out.print("Rut ingresado no esta en sistema, desea registrar un nuevo cliente? (si/no): ");
@@ -224,6 +290,10 @@ public class app {
                 contraseña = s.next();
             }
         }
+        ListaVehiculo listaVenta = new ListaVehiculo(10);
+        ListaCliente listaCliente = new ListaCliente(10);
+        sistema.cerrarSistema(listaCliente, listaVenta);
+        cerrarSistema(listaCliente,listaVenta);
         System.out.println("-----------------------------\nGracias por ocupar el sistema\n-----------------------------");
     }
     
@@ -236,12 +306,6 @@ public class app {
         Scanner s = new Scanner(System.in);
         
         menu(sistema,s);
-        
-        Vehiculo v = new Auto(2010,10,"f7","toyota",1000);
-        Motocicleta.setRevisionTecnica(100);
-        
-        System.out.println(Math.round(v.precioVenta()*100.0)/100.0);  //Math.round(input*100.0)/100.0 para ponerlo con 2 decimales
-        System.out.println(Math.round(v.precioCompra()*100.0)/100.0);
         
     }
     
